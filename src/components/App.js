@@ -6,17 +6,22 @@ import ContactList from './ContactList/ContactList.jsx'
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
     name: '',
     number: '',
   }
-
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'))
+    if (contacts) {
+      this.setState({ contacts })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+    }
+  }
   onSubmit = (contact) => {
     if (
       this.state.contacts.find(
@@ -57,10 +62,10 @@ class App extends Component {
       <div className="phonebook">
         <h1 className="title">Phonebook</h1>
         <ContactForm onSubmit={this.onSubmit} />
-
         <h2 className="title">Contacts</h2>
         <Filter onChange={this.onChange} />
         <ContactList
+          className="contacts-list"
           contacts={this.filterContacts()}
           removeContact={this.removeContact}
         />
