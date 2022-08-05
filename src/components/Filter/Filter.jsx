@@ -1,31 +1,26 @@
 import './Filter.css'
-import React, { Component } from 'react'
+import { useState } from 'react'
 
-class Filter extends Component {
-  state = {
-    inputValue: '',
-  }
+const Filter = ({ onChange }) => {
+  const [inputValue, setInputValue] = useState('')
 
-  handleChange = (evt) => {
+  const handleChange = (evt) => {
     const value = evt.target.value
-    this.setState({ inputValue: value })
-    this.props.onChange(value)
+    setInputValue(value)
+    onChange(value)
   }
 
-  render() {
-    const { inputValue } = this.state
-    return (
-      <div>
-        <p className="text">Find contacts by name</p>
-        <input
-          className="input"
-          type="text"
-          value={inputValue}
-          onChange={this.handleChange}
-        />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <p className="text">Find contacts by name</p>
+      <input
+        className="input"
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+      />
+    </div>
+  )
 }
 
 export default Filter
